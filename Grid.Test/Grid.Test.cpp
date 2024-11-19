@@ -16,27 +16,25 @@ namespace GridTest
 		static constexpr double TOLERANCE = 1e-4;
 		static constexpr double ABSOLUTE_TOLERANCE = 1e-12;
 
-		static CartesianGrid<double, 2>* Grid2D;
-		static CartesianGrid<double, 3>* Grid3D;
-
-		TEST_CLASS_INITIALIZE(ClassInitialize)
+		TEST_METHOD_INITIALIZE(TestInitialize)
 		{
-			Grid2D = new CartesianGrid(RESOLUTION_2D, DOMAIN_SIZE_2D);
-			Grid3D = new CartesianGrid(RESOLUTION_3D, DOMAIN_SIZE_3D);
+			Grid2D = std::make_unique<CartesianGrid<double, 2>>(RESOLUTION_2D, DOMAIN_SIZE_2D);
+			Grid3D = std::make_unique<CartesianGrid<double, 3>>(RESOLUTION_3D, DOMAIN_SIZE_3D);
 		}
 
-		TEST_CLASS_CLEANUP(ClassCleanup)
+		TEST_METHOD_CLEANUP(TestCleanup)
 		{
-			delete Grid2D;
-			delete Grid3D;
+			Grid2D.reset();
+			Grid3D.reset();
 		}
 
 		TEST_METHOD(Test_ValidNodeIndices2D_Success)
 		{
 			Assert::AreEqual(Grid2D->GetNodeIndex({ 0, 0 }), static_cast<size_t>(0), L"Index (0,0) should map to 0");
 		}
-	};
 
-	CartesianGrid<double, 2>* GridTest::Grid2D = nullptr;
-	CartesianGrid<double, 3>* GridTest::Grid3D = nullptr;
+	private:
+		std::unique_ptr<CartesianGrid<double, 2>> Grid2D;
+		std::unique_ptr<CartesianGrid<double, 3>> Grid3D;
+	};
 }
