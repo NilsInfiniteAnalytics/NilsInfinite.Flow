@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <array>
-#include <cmath>
 #include <stdexcept>
 
 template <typename T, size_t Dimensions>
@@ -17,7 +16,7 @@ public:
 		InitializeData();
 	}
 
-	size_t GetNodeIndex(const std::array<size_t, Dimensions>& indices) const
+	[[nodiscard]] size_t GetNodeIndex(const std::array<size_t, Dimensions>& indices) const
 	{
 		size_t index = 0;
 		size_t multiplier = 1;
@@ -67,4 +66,3 @@ private:
 		Data.resize(totalNodes, T{});
 	}
 };
-
